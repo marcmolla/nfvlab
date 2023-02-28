@@ -12,12 +12,11 @@ done
 
 echo "===== Installing microk8s ====="
 snap install microk8s --channel $K8S_VERSION
-usermod -a -G microk8s student
+usermod -a -G snap_microk8s student
 chown -f -R student ~student/.kube
 microk8s enable hostpath-storage dns
-
+touch /var/snap/microk8s/current/var/lock/no-cert-reissue
 snap alias microk8s.kubectl kubectl
-
 
 #
 # Remember that you are running as sudo
@@ -28,7 +27,8 @@ chown $SUDO_UID:$SUDO_GID $CONFIG_YAML
 
 echo "===== Installing juju ====="
 snap install juju --channel $JUJU_VERSION
-mkdir -p ~student/.local/share
+mkdir -p $HOME/.local/share
+chown -R $SUDO_USER:$SUDO_USER $HOME/.local
 
 echo "===== Installing charmcraft ====="
 snap install charmcraft --classic
@@ -67,6 +67,7 @@ projects: []
 cluster: null
 EOF
 usermod -a -G lxd student
-echo "**********************************************"
-echo "* Please type newgrp microk8s and newgrp lxd *"
-echo "**********************************************"
+echo "***********************************************"
+echo "* Please type newgrp microk8s and newgrp lxd  *"
+echo "* or reboot the VM and enter again as student *"
+echo "***********************************************"
