@@ -1,0 +1,6 @@
+name: minicharm
+ 
+display-name: Mini Charm
+summary: Mini charm for testing
+description: |
+  Minimum charm for testing the deployment with juju
