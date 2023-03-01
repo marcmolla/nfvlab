@@ -6,11 +6,11 @@
 
 import logging
 
+from subprocess import check_call, CalledProcessError
+
 from ops.charm import CharmBase
 from ops.main import main
 from ops.model import ActiveStatus, MaintenanceStatus, BlockedStatus
-
-from subprocess import check_call, CalledProcessError
 
 # Log messages can be retrieved using juju debug-log
 logger = logging.getLogger(__name__)
@@ -34,7 +34,7 @@ class MinicharmCharm(CharmBase):
             check_call(["apt-get", "install", "-y", "nginx"])
         except CalledProcessError as err:
             logger.error("package install failed with error code: %d", err.returncode)
-            self.unit.status = BlockedStatus("Failed to install package nginx")      
+            self.unit.status = BlockedStatus("Failed to install package nginx")
 
     def _on_config_changed(self, event):
         """ config_changed os the second hook"""
@@ -45,6 +45,11 @@ class MinicharmCharm(CharmBase):
         """start is the last hook"""
         logger.info("Step 3/3: START")
         self.unit.status = ActiveStatus("Step: 3/3")
+        try:
+            check_call(["systemctl", "start", "nginx"])
+        except CalledProcessError as err:
+            logger.error("error starting nginx with error code: %d", err.returncode)
+            self.unit.status = BlockedStatus("Failed to start nginx")
 
 if __name__ == "__main__":  # pragma: nocover
     main(MinicharmCharm)
