@@ -69,7 +69,7 @@ projects: []
 cluster: null
 EOF
 usermod -a -G lxd student
-mkdir -p $HOME/.local/share
+mkdir -p /home/student/.local/share
 chown -R $SUDO_USER:$SUDO_USER $HOME/.local
 echo "****************************************************"
 echo "* Please type newgrp snap_microk8s and newgrp lxd  *"
