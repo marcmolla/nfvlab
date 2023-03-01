@@ -70,7 +70,7 @@ cluster: null
 EOF
 usermod -a -G lxd student
 mkdir -p /home/student/.local/share
-chown -R $SUDO_USER:$SUDO_USER $HOME/.local
+chown -R $SUDO_USER:$SUDO_USER /home/student/.local
 echo "****************************************************"
 echo "* Please type newgrp snap_microk8s and newgrp lxd  *"
 echo "*  or reboot the VM and enter again as student      *"
