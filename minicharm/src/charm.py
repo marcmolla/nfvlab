@@ -8,7 +8,9 @@ import logging
 
 from ops.charm import CharmBase
 from ops.main import main
-from ops.model import ActiveStatus, WaitingStatus
+from ops.model import ActiveStatus, MaintenanceStatus, BlockedStatus
+
+from subprocess import check_call, CalledProcessError
 
 # Log messages can be retrieved using juju debug-log
 logger = logging.getLogger(__name__)
@@ -28,6 +30,11 @@ class MinicharmCharm(CharmBase):
         """ Install is the first hook called when deploying"""
         logger.info("Step 1/3: INSTALL")
         self.unit.status = MaintenanceStatus("Step: 1/3")
+        try:
+            check_call(["apt-get", "install", "-y", "nginx"])
+        except CalledProcessError as err:
+            logger.error("package install failed with error code: %d", err.returncode)
+            self.unit.status = BlockedStatus("Failed to install package nginx")      
 
     def _on_config_changed(self, event):
         """ config_changed os the second hook"""
