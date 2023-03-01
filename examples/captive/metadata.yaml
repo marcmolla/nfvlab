@@ -1,0 +1,8 @@
+name: captive
+display-name: Captive Portal
+summary: An example of simple NFVc
+description: |
+  Simple charm for section 4 of the lab
+provides:
+  website:
+    interface: http

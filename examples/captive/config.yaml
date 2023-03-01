@@ -1,0 +1,5 @@
+options:
+  brand:
+    default: My Brand
+    description: Brand to be included in the landing page
+    type: string

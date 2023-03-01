@@ -1,0 +1,4 @@
+start-service: 
+  description: Start VNF service
+stop-service:
+  description: Stop VNF service
