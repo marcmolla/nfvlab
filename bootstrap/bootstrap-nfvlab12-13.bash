@@ -1,7 +1,7 @@
 #!/bin/bash
 [ -z "$SUDO_USER" ] && echo "Use sudo!"
 [ -z "$SUDO_USER" ] && exit 1
-K8S_VERSION="1.25-strict/stable"
+K8S_VERSION="1.25/stable"
 JUJU_VERSION="3.0/stable"
 LXD_VERSION="5.11/stable"
 apt update && apt upgrade -y
@@ -15,8 +15,8 @@ echo '===== Installing LXD ====='
 snap install lxd --channel $LXD_VERSION
 
 echo "===== Installing microk8s ====="
-snap install microk8s --channel $K8S_VERSION
-usermod -a -G snap_microk8s student
+snap install microk8s --channel $K8S_VERSION --classic
+microk8s.status --wait-ready
 chown -f -R student ~student/.kube
 microk8s enable hostpath-storage dns
 touch /var/snap/microk8s/current/var/lock/no-cert-reissue
@@ -68,10 +68,10 @@ profiles:
 projects: []
 cluster: null
 EOF
-usermod -a -G lxd student
+# usermod -a -G lxd student
 mkdir -p /home/student/.local/share
 chown -R $SUDO_USER:$SUDO_USER /home/student/.local
-echo "****************************************************"
-echo "* Please type newgrp snap_microk8s and newgrp lxd  *"
-echo "*  or reboot the VM and enter again as student      *"
-echo "****************************************************"
+# echo "****************************************************"
+# echo "* Please type newgrp snap_microk8s and newgrp lxd  *"
+# echo "*  or reboot the VM and enter again as student     *"
+# echo "****************************************************"
